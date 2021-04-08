@@ -45,7 +45,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 try{
                     userId = JWT.decode(token).getAudience().get(0);
                 }catch (JWTDecodeException e){
-                    throw new Exception("token不对");
+                    throw new Exception("token验证未通过");
                 }
                 User user = userService.findUserById(Integer.valueOf(userId));
                 if(user == null){
@@ -55,7 +55,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 try{
                     jwtVerifier.verify(token);
                 }catch (JWTVerificationException e){
-                    throw  new RuntimeException("密码错误");
+                    throw  new RuntimeException("用户密码错误");
                 }
                 return true;
             }
