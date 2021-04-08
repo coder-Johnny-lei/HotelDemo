@@ -64,9 +64,9 @@ public class UserController {
             map.put("msg","用户名错误,请重新输入");
             return map;
         }
-        userForBase.setUserId(userService.findUserByUserName(user.getUserName()).getUserId());
-        userForBase.setUserName(userService.findUserByUserName(user.getUserName()).getUserName());
-        userForBase.setPassword(userService.findUserByUserName(user.getUserName()).getPassword());
+        userForBase.setUserId(userByUserName.getUserId());
+        userForBase.setUserName(userByUserName.getUserName());
+        userForBase.setPassword(userByUserName.getPassword());
         if(!userForBase.getPassword().equals(user.getPassword())){
             map.put("message","登录失败,密码错误!");
             return map;
