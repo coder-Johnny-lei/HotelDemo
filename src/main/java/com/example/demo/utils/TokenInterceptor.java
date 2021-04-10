@@ -24,6 +24,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,  HttpServletResponse response, Object handle) throws Exception {
         String token = request.getHeader("token");
+        String loginUserId = request.getHeader("loginUserId");
         if(!(handle instanceof HandlerMethod)){
             return true;
         }
@@ -47,6 +48,9 @@ public class TokenInterceptor implements HandlerInterceptor {
                 }catch (JWTDecodeException e){
                     throw new Exception("token验证未通过");
                 }
+                if(!userId.equals(loginUserId)){
+                    throw new Exception("用户已登出");
+                }
                 User user = userService.findUserById(Integer.valueOf(userId));
                 if(user == null){
                     throw new RuntimeException("用户不存在，请重新登录");
@@ -55,7 +59,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 try{
                     jwtVerifier.verify(token);
                 }catch (JWTVerificationException e){
-                    throw  new RuntimeException("用户密码错误");
+                    throw  new RuntimeException("");
                 }
                 return true;
             }
